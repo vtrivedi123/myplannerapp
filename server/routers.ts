@@ -54,7 +54,7 @@ export const appRouter = router({
 
         // Set session cookie using Set-Cookie header
         const cookieOptions = getSessionCookieOptions(ctx.req);
-        const cookieValue = `${COOKIE_NAME}=${openId}; Path=/; HttpOnly; ${cookieOptions.secure ? 'Secure;' : ''} SameSite=None`;
+        const cookieValue = `${COOKIE_NAME}=${openId}; Path=/; HttpOnly; ${cookieOptions.secure ? 'Secure;' : ''} SameSite=${cookieOptions.sameSite}`;
         ctx.res.setHeader('Set-Cookie', cookieValue);
 
         return { success: true, user };
@@ -90,7 +90,7 @@ export const appRouter = router({
 
         // Set session cookie using Set-Cookie header
         const cookieOptions = getSessionCookieOptions(ctx.req);
-        const cookieValue = `${COOKIE_NAME}=${user.openId}; Path=/; HttpOnly; ${cookieOptions.secure ? 'Secure;' : ''} SameSite=None`;
+        const cookieValue = `${COOKIE_NAME}=${user.openId}; Path=/; HttpOnly; ${cookieOptions.secure ? 'Secure;' : ''} SameSite=${cookieOptions.sameSite}`;
         ctx.res.setHeader('Set-Cookie', cookieValue);
 
         return { success: true, user };
