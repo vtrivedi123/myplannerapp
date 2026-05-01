@@ -7,7 +7,7 @@ import { useState, useMemo } from 'react';
 import { usePlanner } from '@/contexts/PlannerContext';
 import {
   cn, getCourseColorEntry, getDueBadge, PRIORITY_CONFIG,
-  ASSIGNMENT_TYPE_CONFIG, formatDateShort, COURSE_COLORS
+  ASSIGNMENT_TYPE_CONFIG, formatDateShort, formatTimeAmPm, COURSE_COLORS
 } from '@/lib/utils';
 import {
   Plus, Trash2, Edit3, ChevronDown, ChevronUp, Filter,
@@ -254,7 +254,7 @@ function AssignmentCard({ assignment }: { assignment: Assignment }) {
           </span>
           <span className="text-[10px] text-muted-foreground font-mono">
             {formatDateShort(assignment.dueDate)}
-            {assignment.dueTime && ` · ${assignment.dueTime}`}
+            {assignment.dueTime && ` · ${formatTimeAmPm(assignment.dueTime)}`}
           </span>
         </div>
 

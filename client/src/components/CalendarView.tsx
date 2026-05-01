@@ -7,7 +7,7 @@ import { useMemo, useState } from 'react';
 import { usePlanner } from '@/contexts/PlannerContext';
 import {
   cn, getDaysInMonth, getFirstDayOfMonth, MONTH_NAMES,
-  formatDate, ASSIGNMENT_TYPE_CONFIG, PRIORITY_CONFIG
+  formatDate, ASSIGNMENT_TYPE_CONFIG, PRIORITY_CONFIG, formatTimeAmPm
 } from '@/lib/utils';
 import { ChevronLeft, ChevronRight, CheckCircle2, Circle } from 'lucide-react';
 import { toast } from 'sonner';
@@ -77,7 +77,7 @@ function DayDetail({
                       </span>
                     )}
                     {a.dueTime && (
-                      <p className="text-[10px] text-muted-foreground font-mono mt-0.5">{a.dueTime}</p>
+                      <p className="text-[10px] text-muted-foreground font-mono mt-0.5">{formatTimeAmPm(a.dueTime)}</p>
                     )}
                   </div>
                 </div>

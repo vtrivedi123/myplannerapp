@@ -36,6 +36,16 @@ export function formatDateShort(dateStr: string): string {
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 
+export function formatTimeAmPm(timeStr: string): string {
+  if (!timeStr) return '';
+  const [hours, minutes] = timeStr.split(':');
+  const h = parseInt(hours, 10);
+  const m = minutes;
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  const displayHour = h % 12 || 12;
+  return `${displayHour}:${m} ${ampm}`;
+}
+
 export function isToday(dateStr: string): boolean {
   return dateStr === new Date().toISOString().split('T')[0];
 }
