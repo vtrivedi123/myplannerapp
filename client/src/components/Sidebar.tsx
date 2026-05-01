@@ -171,14 +171,14 @@ function SemesterFolder({ semester }: { semester: Semester }) {
   const [editOpen, setEditOpen] = useState(false);
   const [addCourseOpen, setAddCourseOpen] = useState(false);
   const [hovering, setHovering] = useState(false);
-
   const courses = state.courses.filter(c => c.semesterId === semester.id);
   const isActive = state.activeSemesterId === semester.id;
-
   function handleSelect() {
     dispatch({ type: 'SET_ACTIVE_SEMESTER', payload: semester.id });
     dispatch({ type: 'SET_ACTIVE_COURSE', payload: null });
-    setExpanded(true);
+  }
+  function handleToggleExpanded() {
+    setExpanded(e => !e);
   }
 
   function handleDelete() {
@@ -200,7 +200,7 @@ function SemesterFolder({ semester }: { semester: Semester }) {
       >
         <button
           className="flex items-center gap-2 flex-1 min-w-0"
-          onClick={() => { handleSelect(); setExpanded(e => !e); }}
+          onClick={() => { handleSelect(); handleToggleExpanded(); }}
         >
           <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: semester.color }} />
           <Folder size={14} className="shrink-0 text-muted-foreground" />
@@ -324,24 +324,25 @@ export default function Sidebar() {
 
   return (
     <aside className="w-60 shrink-0 h-full flex flex-col border-r border-border bg-sidebar">
-      {/* Logo / Header with anime hero */}
+      {/* Logo / Header with neon styling */}
       <div
-        className="px-4 pt-5 pb-4 border-b relative overflow-hidden"
+        className="px-4 pt-5 pb-4 border-b"
         style={{
-          backgroundImage: `url('https://d2xsxph8kpxj0f.cloudfront.net/310519663617348932/FbYHn7pJ544MHtifrXSeYe/anime-sidebar-bg-ff5WRMHYMBoKcxWdt5eMea.webp')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center top',
           borderColor: 'rgba(0, 217, 255, 0.3)',
-          boxShadow: '0 0 20px rgba(0, 217, 255, 0.15), inset 0 0 20px rgba(0, 217, 255, 0.05)',
+          boxShadow: '0 0 15px rgba(0, 217, 255, 0.1), inset 0 0 15px rgba(0, 217, 255, 0.05)',
         }}
       >
-        <div className="flex items-center gap-2.5 relative z-10">
-          <div className="w-9 h-9 rounded-lg bg-primary/20 backdrop-blur-sm flex items-center justify-center border" style={{ borderColor: 'rgba(0, 217, 255, 0.6)', boxShadow: '0 0 10px rgba(0, 217, 255, 0.5)' }}>
+        <div className="flex items-center gap-2.5">
+          <div className="w-9 h-9 rounded-lg bg-primary/20 flex items-center justify-center border" style={{ borderColor: 'rgba(0, 217, 255, 0.6)', boxShadow: '0 0 10px rgba(0, 217, 255, 0.5)' }}>
             <GraduationCap size={17} className="text-primary" />
           </div>
           <div>
-            <h1 className="font-[Fraunces] text-base font-bold leading-tight text-primary" style={{ textShadow: '0 0 10px rgba(0, 217, 255, 0.4)' }}>Campus Planner</h1>
-            <p className="text-[10px] text-muted-foreground">Stay on track ✨</p>
+            <h1 className="font-[Fraunces] text-base font-bold leading-tight text-primary" style={{ textShadow: '0 0 10px rgba(0, 217, 255, 0.4)' }}>Planner</h1>
+            <div className="flex gap-1 mt-0.5">
+              <span className="inline-block w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#00D9FF' }} />
+              <span className="inline-block w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#FF006E' }} />
+              <span className="inline-block w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#7F39FB' }} />
+            </div>
           </div>
         </div>
       </div>
