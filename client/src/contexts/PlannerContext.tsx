@@ -7,10 +7,11 @@ import { nanoid } from 'nanoid';
 import type {
   PlannerState, Semester, Course, Assignment, Habit, HabitLog
 } from '@/lib/types';
+import { getTodayLocalDate } from '@/lib/utils';
 
 // ── Seed data ──────────────────────────────────────────────
 const today = new Date();
-const todayStr = today.toISOString().split('T')[0];
+const todayStr = getTodayLocalDate();
 
 const seedSemesterId = 'sem-spring-25';
 const seedCourseIds = ['c1', 'c2', 'c3'];
@@ -140,7 +141,7 @@ function reducer(state: PlannerState, action: Action): PlannerState {
         assignments: [...state.assignments, {
           ...action.payload,
           id: nanoid(),
-          createdAt: new Date().toISOString().split('T')[0],
+          createdAt: getTodayLocalDate(),
         }],
       };
     case 'UPDATE_ASSIGNMENT':

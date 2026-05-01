@@ -46,12 +46,20 @@ export function formatTimeAmPm(timeStr: string): string {
   return `${displayHour}:${m} ${ampm}`;
 }
 
+export function getTodayLocalDate(): string {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const day = String(today.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 export function isToday(dateStr: string): boolean {
-  return dateStr === new Date().toISOString().split('T')[0];
+  return dateStr === getTodayLocalDate();
 }
 
 export function isPast(dateStr: string): boolean {
-  return dateStr < new Date().toISOString().split('T')[0];
+  return dateStr < getTodayLocalDate();
 }
 
 export function daysUntil(dateStr: string): number {

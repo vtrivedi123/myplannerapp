@@ -7,7 +7,7 @@ import { useMemo, useState } from 'react';
 import { usePlanner } from '@/contexts/PlannerContext';
 import {
   cn, getDaysInMonth, getFirstDayOfMonth, MONTH_NAMES,
-  formatDate, ASSIGNMENT_TYPE_CONFIG, PRIORITY_CONFIG, formatTimeAmPm
+  formatDate, ASSIGNMENT_TYPE_CONFIG, PRIORITY_CONFIG, formatTimeAmPm, getTodayLocalDate
 } from '@/lib/utils';
 import { ChevronLeft, ChevronRight, CheckCircle2, Circle } from 'lucide-react';
 import { toast } from 'sonner';
@@ -168,7 +168,7 @@ export default function CalendarView() {
   const { calendarMonth: month, calendarYear: year } = state;
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
-  const todayStr = new Date().toISOString().split('T')[0];
+  const todayStr = getTodayLocalDate();
 
   function prevMonth() {
     const m = month === 0 ? 11 : month - 1;

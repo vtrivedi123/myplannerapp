@@ -7,7 +7,7 @@ import { useState, useMemo } from 'react';
 import { usePlanner } from '@/contexts/PlannerContext';
 import {
   cn, getCourseColorEntry, getDueBadge, PRIORITY_CONFIG,
-  ASSIGNMENT_TYPE_CONFIG, formatDateShort, formatTimeAmPm, COURSE_COLORS
+  ASSIGNMENT_TYPE_CONFIG, formatDateShort, formatTimeAmPm, COURSE_COLORS, getTodayLocalDate
 } from '@/lib/utils';
 import {
   Plus, Trash2, Edit3, ChevronDown, ChevronUp, Filter,
@@ -33,7 +33,7 @@ function AssignmentDialog({
   const [title, setTitle] = useState(existing?.title ?? '');
   const [courseId, setCourseId] = useState(existing?.courseId ?? defaultCourseId ?? '');
   const [semesterId, setSemesterId] = useState(existing?.semesterId ?? defaultSemesterId ?? state.semesters[0]?.id ?? '');
-  const [dueDate, setDueDate] = useState(existing?.dueDate ?? new Date().toISOString().split('T')[0]);
+  const [dueDate, setDueDate] = useState(existing?.dueDate ?? getTodayLocalDate());
   const [dueTime, setDueTime] = useState(existing?.dueTime ?? '');
   const [type, setType] = useState<AssignmentType>(existing?.type ?? 'assignment');
   const [priority, setPriority] = useState<Priority>(existing?.priority ?? 'medium');
@@ -312,15 +312,10 @@ export default function AssignmentList() {
       .sort((a, b) => b.dueDate.localeCompare(a.dueDate));
   }, [baseAssignments]);
 
-  const overdue = pending.filter(a => {
-    const today = new Date().toISOString().split('T')[0];
-    return a.dueDate < today;
-  });
-
-  const upcoming = pending.filter(a => {
-    const today = new Date().toISOString().split('T')[0];
-    return a.dueDate >= today;
-  });
+  const todayStr = getTodayLocalDate();
+  const overdue = pending.filter(a => a.dueDate < todayStr);
+  const upcoming = pending.filter(a => a.dueDate > todayStr);
+  const todayAssignments = pending.filter(a => a.dueDate === todayStr);
 
   const activeCourse = state.activeCourseId
     ? state.courses.find(c => c.id === state.activeCourseId)

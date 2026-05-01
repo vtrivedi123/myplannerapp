@@ -5,7 +5,7 @@
 
 import { useState, useMemo } from 'react';
 import { usePlanner } from '@/contexts/PlannerContext';
-import { cn, HABIT_CATEGORY_CONFIG } from '@/lib/utils';
+import { cn, HABIT_CATEGORY_CONFIG, getTodayLocalDate } from '@/lib/utils';
 import { Plus, Trash2, Edit3, CheckCircle2, Circle, Flame } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -95,7 +95,7 @@ function HabitCard({ habit }: { habit: Habit }) {
   const { state, dispatch } = usePlanner();
   const [editOpen, setEditOpen] = useState(false);
 
-  const todayStr = new Date().toISOString().split('T')[0];
+  const todayStr = getTodayLocalDate();
 
   // Last 7 days
   const last7 = useMemo(() => {
@@ -103,7 +103,10 @@ function HabitCard({ habit }: { habit: Habit }) {
     for (let i = 6; i >= 0; i--) {
       const d = new Date();
       d.setDate(d.getDate() - i);
-      days.push(d.toISOString().split('T')[0]);
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      days.push(`${year}-${month}-${day}`);
     }
     return days;
   }, []);
@@ -245,7 +248,7 @@ export default function LifestyleView() {
   const { state } = usePlanner();
   const [addOpen, setAddOpen] = useState(false);
 
-  const todayStr = new Date().toISOString().split('T')[0];
+  const todayStr = getTodayLocalDate();
   const doneToday = state.habits.filter(h =>
     state.habitLogs.find(l => l.habitId === h.id && l.date === todayStr && l.done)
   ).length;
