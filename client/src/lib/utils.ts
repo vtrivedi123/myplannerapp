@@ -54,6 +54,14 @@ export function getTodayLocalDate(): string {
   return `${year}-${month}-${day}`;
 }
 
+export function parseDateInput(dateStr: string): Date {
+  return new Date(`${dateStr}T00:00:00`);
+}
+
+export function formatDateInput(date: Date): string {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+}
+
 export function isToday(dateStr: string): boolean {
   return dateStr === getTodayLocalDate();
 }
