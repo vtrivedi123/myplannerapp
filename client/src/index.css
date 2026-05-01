@@ -321,3 +321,36 @@
 .fade-complete {
   animation: fadeComplete 0.4s ease forwards;
 }
+
+/* Date and time input styling for anime theme */
+input[type="date"],
+input[type="time"] {
+  color-scheme: dark;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.8) brightness(1.2);
+  cursor: pointer;
+}
+
+/* Firefox date picker styling */
+input[type="date"]::-moz-calendar-picker-indicator,
+input[type="time"]::-moz-calendar-picker-indicator {
+  filter: invert(0.8) brightness(1.2);
+  cursor: pointer;
+}
+
+/* Webkit date picker dropdown */
+input[type="date"]::-webkit-outer-spin-button,
+input[type="date"]::-webkit-inner-spin-button,
+input[type="time"]::-webkit-outer-spin-button,
+input[type="time"]::-webkit-inner-spin-button {
+  display: none;
+}
+
+/* Placeholder styling */
+input[type="date"]::placeholder,
+input[type="time"]::placeholder {
+  color: oklch(0.552 0.016 285.938);
+}

@@ -114,11 +114,11 @@ function AssignmentDialog({
           <div className="grid grid-cols-2 gap-2">
             <div>
               <label className="text-xs font-medium text-muted-foreground mb-1 block">Due Date *</label>
-              <Input type="date" value={dueDate} onChange={e => setDueDate(e.target.value)} />
+              <input type="date" value={dueDate} onChange={e => setDueDate(e.target.value)} className="px-3 py-2 rounded-lg text-xs bg-background border border-primary/30 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/60 transition-all" />
             </div>
             <div>
               <label className="text-xs font-medium text-muted-foreground mb-1 block">Due Time</label>
-              <Input type="time" value={dueTime} onChange={e => setDueTime(e.target.value)} />
+              <input type="time" value={dueTime} onChange={e => setDueTime(e.target.value)} className="px-3 py-2 rounded-lg text-xs bg-background border border-primary/30 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/60 transition-all" />
             </div>
           </div>
           <div className="grid grid-cols-2 gap-2">
@@ -374,16 +374,16 @@ export default function AssignmentList() {
               {t === 'all' ? 'All' : `${ASSIGNMENT_TYPE_CONFIG[t as AssignmentType].emoji} ${ASSIGNMENT_TYPE_CONFIG[t as AssignmentType].label}`}
             </button>
           ))}
-          <div className="ml-auto flex items-center gap-1 text-xs text-muted-foreground">
-            <SortAsc size={12} />
+          <div className="ml-auto flex items-center gap-2">
+            <SortAsc size={12} className="text-primary" />
             <select
               value={sortBy}
               onChange={e => setSortBy(e.target.value as typeof sortBy)}
-              className="bg-transparent text-xs border-none outline-none cursor-pointer"
+              className="px-2.5 py-1 rounded-lg text-xs font-medium bg-primary/10 text-primary border border-primary/30 hover:border-primary/60 transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50"
             >
-              <option value="dueDate">Due Date</option>
-              <option value="priority">Priority</option>
-              <option value="course">Course</option>
+              <option value="dueDate" className="bg-background text-foreground">Due Date</option>
+              <option value="priority" className="bg-background text-foreground">Priority</option>
+              <option value="course" className="bg-background text-foreground">Course</option>
             </select>
           </div>
         </div>
