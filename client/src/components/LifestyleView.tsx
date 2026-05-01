@@ -254,17 +254,19 @@ export default function LifestyleView() {
 
   return (
     <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
-      {/* Header with hero */}
+      {/* Header with anime hero */}
       <div
-        className="relative overflow-hidden border-b border-border"
+        className="relative overflow-hidden border-b"
         style={{
-          backgroundImage: `url('https://d2xsxph8kpxj0f.cloudfront.net/310519663617348932/FbYHn7pJ544MHtifrXSeYe/planner-hero-cY4pKg8aGEC3Z6jbA7NPMS.webp')`,
+          backgroundImage: `url('https://d2xsxph8kpxj0f.cloudfront.net/310519663617348932/FbYHn7pJ544MHtifrXSeYe/anime-hero-banner-7jNHkVxJpStwTzBsdsr2z6.webp')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center 60%',
           minHeight: '100px',
+          borderColor: 'rgba(0, 217, 255, 0.2)',
+          boxShadow: '0 0 20px rgba(0, 217, 255, 0.1)',
         }}
       >
-        <div className="absolute inset-0 bg-background/65 backdrop-blur-[1px]" />
+        <div className="absolute inset-0 bg-background/70 backdrop-blur-[1px]" />
         <div className="relative z-10 px-6 py-5">
           <div className="flex items-center justify-between">
             <div>

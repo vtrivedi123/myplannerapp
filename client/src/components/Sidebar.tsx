@@ -324,21 +324,23 @@ export default function Sidebar() {
 
   return (
     <aside className="w-60 shrink-0 h-full flex flex-col border-r border-border bg-sidebar">
-      {/* Logo / Header with hero image */}
+      {/* Logo / Header with anime hero */}
       <div
-        className="px-4 pt-5 pb-4 border-b border-border relative overflow-hidden"
+        className="px-4 pt-5 pb-4 border-b relative overflow-hidden"
         style={{
-          backgroundImage: `url('https://d2xsxph8kpxj0f.cloudfront.net/310519663617348932/FbYHn7pJ544MHtifrXSeYe/planner-sidebar-bg-8UADr3KoSrPp4gWWxyq97x.webp')`,
+          backgroundImage: `url('https://d2xsxph8kpxj0f.cloudfront.net/310519663617348932/FbYHn7pJ544MHtifrXSeYe/anime-sidebar-bg-ff5WRMHYMBoKcxWdt5eMea.webp')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center top',
+          borderColor: 'rgba(0, 217, 255, 0.3)',
+          boxShadow: '0 0 20px rgba(0, 217, 255, 0.15), inset 0 0 20px rgba(0, 217, 255, 0.05)',
         }}
       >
         <div className="flex items-center gap-2.5 relative z-10">
-          <div className="w-9 h-9 rounded-xl bg-primary/90 backdrop-blur-sm flex items-center justify-center shadow-sm">
-            <GraduationCap size={17} className="text-primary-foreground" />
+          <div className="w-9 h-9 rounded-lg bg-primary/20 backdrop-blur-sm flex items-center justify-center border" style={{ borderColor: 'rgba(0, 217, 255, 0.6)', boxShadow: '0 0 10px rgba(0, 217, 255, 0.5)' }}>
+            <GraduationCap size={17} className="text-primary" />
           </div>
           <div>
-            <h1 className="font-[Fraunces] text-base font-semibold leading-tight text-foreground">Campus Planner</h1>
+            <h1 className="font-[Fraunces] text-base font-bold leading-tight text-primary" style={{ textShadow: '0 0 10px rgba(0, 217, 255, 0.4)' }}>Campus Planner</h1>
             <p className="text-[10px] text-muted-foreground">Stay on track ✨</p>
           </div>
         </div>

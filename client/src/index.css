@@ -51,51 +51,42 @@
 }
 
 :root {
-  --radius: 0.75rem;
-
-  /* Soft Academic Palette */
-  --background: oklch(0.985 0.005 85);          /* warm off-white #FAFAF8 */
-  --foreground: oklch(0.28 0.02 60);             /* warm dark brown */
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.28 0.02 60);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.28 0.02 60);
-
-  /* Dusty rose primary */
-  --primary: oklch(0.58 0.09 10);               /* dusty rose #C4748A */
-  --primary-foreground: oklch(0.98 0.005 10);
-
-  /* Sage green secondary */
-  --secondary: oklch(0.92 0.03 150);
-  --secondary-foreground: oklch(0.4 0.06 150);
-
-  --muted: oklch(0.96 0.008 85);
-  --muted-foreground: oklch(0.55 0.02 60);
-
-  --accent: oklch(0.94 0.025 150);              /* sage green accent */
-  --accent-foreground: oklch(0.35 0.07 150);
-
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0 0);
-
-  --border: oklch(0.91 0.01 85);
-  --input: oklch(0.91 0.01 85);
-  --ring: oklch(0.58 0.09 10);
-
-  --chart-1: oklch(0.58 0.09 10);
-  --chart-2: oklch(0.6 0.08 150);
-  --chart-3: oklch(0.72 0.1 85);
-  --chart-4: oklch(0.65 0.12 45);
-  --chart-5: oklch(0.55 0.1 280);
-
-  --sidebar: oklch(0.975 0.008 85);
-  --sidebar-foreground: oklch(0.28 0.02 60);
-  --sidebar-primary: oklch(0.58 0.09 10);
-  --sidebar-primary-foreground: oklch(0.98 0.005 10);
-  --sidebar-accent: oklch(0.94 0.025 150);
-  --sidebar-accent-foreground: oklch(0.35 0.07 150);
-  --sidebar-border: oklch(0.91 0.01 85);
-  --sidebar-ring: oklch(0.58 0.09 10);
+  --radius: 0.5rem;
+  /* Anime Dark Blue Theme with Neon Accents */
+  --background: #0A1428;
+  --foreground: #E0E7FF;
+  --card: #1a2a4a;
+  --card-foreground: #E0E7FF;
+  --popover: #1a2a4a;
+  --popover-foreground: #E0E7FF;
+  /* Neon Cyan Primary */
+  --primary: #00D9FF;
+  --primary-foreground: #0A1428;
+  /* Neon Magenta Secondary */
+  --secondary: #FF006E;
+  --secondary-foreground: #FFF;
+  --muted: #2a3a5a;
+  --muted-foreground: #9CA3AF;
+  --accent: #00D9FF;
+  --accent-foreground: #0A1428;
+  --destructive: #FF1744;
+  --destructive-foreground: #FFF;
+  --border: #2a3a5a;
+  --input: #1a2a4a;
+  --ring: #00D9FF;
+  --chart-1: #00D9FF;
+  --chart-2: #FF006E;
+  --chart-3: #7F39FB;
+  --chart-4: #00D9FF;
+  --chart-5: #FF006E;
+  --sidebar: #0F1A2E;
+  --sidebar-foreground: #E0E7FF;
+  --sidebar-primary: #00D9FF;
+  --sidebar-primary-foreground: #0A1428;
+  --sidebar-accent: #00D9FF;
+  --sidebar-accent-foreground: #0A1428;
+  --sidebar-border: #2a3a5a;
+  --sidebar-ring: #00D9FF;
 }
 
 @layer base {
@@ -191,12 +182,55 @@
     @apply opacity-35 bg-muted/30;
   }
 
+  /* Anime-style neon glow effects */
+  .neon-glow {
+    box-shadow: 0 0 10px rgba(0, 217, 255, 0.5), 0 0 20px rgba(0, 217, 255, 0.2);
+  }
+  .neon-glow-pink {
+    box-shadow: 0 0 10px rgba(255, 0, 110, 0.5), 0 0 20px rgba(255, 0, 110, 0.2);
+  }
+  .neon-border {
+    border-color: rgba(0, 217, 255, 0.4);
+    box-shadow: inset 0 0 10px rgba(0, 217, 255, 0.1);
+  }
+
   /* Strikethrough animation for completed calendar items */
   .cal-assignment {
     @apply relative text-xs px-1.5 py-0.5 rounded-sm mb-0.5 truncate cursor-pointer transition-all duration-300;
   }
   .cal-assignment.completed {
-    @apply opacity-50 line-through;
+    @apply opacity-60 line-through;
+    text-decoration-color: rgba(0, 217, 255, 0.6);
+  }
+
+  /* Soft card with neon border */
+  .soft-card {
+    @apply rounded-lg border transition-all duration-300;
+    border-color: rgba(0, 217, 255, 0.2);
+    background: rgba(26, 42, 74, 0.5);
+  }
+  .soft-card:hover {
+    border-color: rgba(0, 217, 255, 0.4);
+    box-shadow: 0 0 15px rgba(0, 217, 255, 0.15);
+  }
+
+  /* Habit dot with neon effect */
+  .habit-dot {
+    @apply w-6 h-6 rounded-full border transition-all;
+    border-color: rgba(0, 217, 255, 0.3);
+  }
+  .habit-dot.done {
+    box-shadow: 0 0 8px rgba(0, 217, 255, 0.4), inset 0 0 8px rgba(0, 217, 255, 0.2);
+  }
+
+  /* Neon text glow */
+  .neon-text {
+    color: #00D9FF;
+    text-shadow: 0 0 10px rgba(0, 217, 255, 0.5), 0 0 20px rgba(0, 217, 255, 0.2);
+  }
+  .neon-text-pink {
+    color: #FF006E;
+    text-shadow: 0 0 10px rgba(255, 0, 110, 0.5), 0 0 20px rgba(255, 0, 110, 0.2);
   }
 
   /* Sidebar folder item */
@@ -207,7 +241,34 @@
     @apply bg-accent/60;
   }
   .folder-item.active {
-    @apply bg-primary/10 text-primary;
+    @apply bg-primary/20 text-primary;
+    box-shadow: 0 0 10px rgba(0, 217, 255, 0.2);
+  }
+
+  /* Anime button styles with neon effects */
+  button, [role="button"] {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  button:hover:not(:disabled), [role="button"]:hover:not([aria-disabled="true"]) {
+    transform: translateY(-2px);
+  }
+
+  /* Neon primary button */
+  .btn-neon {
+    background: linear-gradient(135deg, rgba(0, 217, 255, 0.2), rgba(0, 217, 255, 0.1));
+    border: 1px solid rgba(0, 217, 255, 0.4);
+    color: #00D9FF;
+    box-shadow: 0 0 10px rgba(0, 217, 255, 0.2), inset 0 0 10px rgba(0, 217, 255, 0.05);
+    transition: all 0.3s ease;
+  }
+  .btn-neon:hover {
+    box-shadow: 0 0 20px rgba(0, 217, 255, 0.4), inset 0 0 15px rgba(0, 217, 255, 0.1);
+    border-color: rgba(0, 217, 255, 0.6);
+  }
+
+  /* Anime input focus effect */
+  input:focus, textarea:focus, select:focus {
+    box-shadow: 0 0 15px rgba(0, 217, 255, 0.3), inset 0 0 10px rgba(0, 217, 255, 0.05) !important;
   }
 
   /* Lifestyle habit dot */
