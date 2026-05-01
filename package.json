@@ -1,7 +1,10 @@
 {
   "name": "college-planner",
   "version": "1.0.0",
+  "description": "College Planner App",
+  "author": "Vishal",
   "type": "module",
+  "main": "electron/main.cjs",
   "license": "MIT",
   "scripts": {
     "dev": "vite --host",
@@ -9,7 +12,9 @@
     "start": "NODE_ENV=production node dist/index.js",
     "preview": "vite preview --host",
     "check": "tsc --noEmit",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "electron:dev": "concurrently \"pnpm dev\" \"wait-on http://localhost:4000 && electron .\"",
+    "electron:build": "pnpm build && electron-builder"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -76,6 +81,9 @@
     "@vitejs/plugin-react": "^5.0.4",
     "add": "^2.0.6",
     "autoprefixer": "^10.4.20",
+    "concurrently": "^9.2.1",
+    "electron": "^41.4.0",
+    "electron-builder": "^26.8.1",
     "esbuild": "^0.25.0",
     "pnpm": "^10.15.1",
     "postcss": "^8.4.47",
@@ -86,7 +94,24 @@
     "typescript": "5.6.3",
     "vite": "^7.1.7",
     "vite-plugin-manus-runtime": "^0.0.57",
-    "vitest": "^2.1.4"
+    "vitest": "^2.1.4",
+    "wait-on": "^9.0.5"
+  },
+  "build": {
+    "appId": "com.college-planner",
+    "productName": "College Planner",
+    "win": {
+      "target": "nsis"
+    },
+    "files": [
+      "electron/**",
+      "dist/**",
+      ".env"
+    ],
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
   },
   "packageManager": "pnpm@10.4.1+sha512.c753b6c3ad7afa13af388fa6d808035a008e30ea9993f58c6663e2bc5ff21679aa834db094987129aa4d488b86df57f7b634981b2f827cdcacc698cc0cfb88af",
   "pnpm": {
