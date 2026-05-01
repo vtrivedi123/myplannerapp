@@ -1,25 +1,33 @@
-import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
-import { Streamdown } from 'streamdown';
+// ============================================================
+// DESIGN: Soft Academic — Main planner layout
+// Sidebar | Main content area (Assignments / Calendar / Lifestyle)
+// ============================================================
 
-/**
- * All content in this page are only for example, replace with your own feature implementation
- * When building pages, remember your instructions in Frontend Best Practices, Design Guide and Common Pitfalls
- */
-export default function Home() {
-  // If theme is switchable in App.tsx, we can implement theme toggling like this:
-  // const { theme, toggleTheme } = useTheme();
+import { PlannerProvider, usePlanner } from '@/contexts/PlannerContext';
+import Sidebar from '@/components/Sidebar';
+import AssignmentList from '@/components/AssignmentList';
+import CalendarView from '@/components/CalendarView';
+import LifestyleView from '@/components/LifestyleView';
+
+function PlannerContent() {
+  const { state } = usePlanner();
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <main>
-        {/* Example: lucide-react for icons */}
-        <Loader2 className="animate-spin" />
-        Example Page
-        {/* Example: Streamdown for markdown rendering */}
-        <Streamdown>Any **markdown** content</Streamdown>
-        <Button variant="default">Example Button</Button>
+    <div className="h-screen flex overflow-hidden bg-background">
+      <Sidebar />
+      <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
+        {state.activeView === 'assignments' && <AssignmentList />}
+        {state.activeView === 'calendar' && <CalendarView />}
+        {state.activeView === 'lifestyle' && <LifestyleView />}
       </main>
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <PlannerProvider>
+      <PlannerContent />
+    </PlannerProvider>
   );
 }
