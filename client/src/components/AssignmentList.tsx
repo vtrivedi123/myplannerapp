@@ -327,58 +327,38 @@ export default function AssignmentList() {
     : null;
 
   return (
-    <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
-      {/* Hero Banner — only show when no specific course is selected */}
-      {!activeCourse && (
-        <div
-          className="relative overflow-hidden border-b"
-          style={{
-            backgroundImage: `url('https://d2xsxph8kpxj0f.cloudfront.net/310519663617348932/FbYHn7pJ544MHtifrXSeYe/anime-hero-banner-7jNHkVxJpStwTzBsdsr2z6.webp')`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center 30%',
-            minHeight: '120px',
-            borderColor: 'rgba(0, 217, 255, 0.2)',
-            boxShadow: '0 0 20px rgba(0, 217, 255, 0.1)',
-          }}
-        >
-          <div className="absolute inset-0 bg-background/70 backdrop-blur-[1px]" />
-          <div className="relative z-10 px-6 py-5 flex items-end justify-between">
-            <div>
-              <p className="text-xs font-medium text-muted-foreground mb-0.5">{greeting} ☀️</p>
-              <h2 className="font-[Fraunces] text-2xl font-semibold text-foreground">
-                {activeSemester ? activeSemester.name : 'All Assignments'}
-              </h2>
-              <p className="text-xs text-muted-foreground mt-0.5">
-                {pending.length} pending · {completed.length} done
-              </p>
-            </div>
-            <Button size="sm" onClick={() => setAddOpen(true)} className="gap-1.5 shadow-sm">
-              <Plus size={14} />
-              Add Assignment
-            </Button>
+     <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
+      {/* Compact header matching Lifestyle style */}
+      <div className="px-6 pt-6 pb-4 border-b border-border">
+        <div className="flex items-center justify-between mb-3">
+          <div>
+            {activeCourse ? (
+              <>
+                <div className="flex items-center gap-2 mb-0.5">
+                  <span className="w-3 h-3 rounded-full" style={{ backgroundColor: activeCourse.color }} />
+                  <h2 className="font-[Fraunces] text-xl font-semibold">{activeCourse.name}</h2>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  {activeCourse.code} · {pending.length} pending · {completed.length} done
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="text-xs font-medium text-muted-foreground mb-0.5">{greeting} ☀️</p>
+                <h2 className="font-[Fraunces] text-xl font-semibold">
+                  {activeSemester ? activeSemester.name : 'All Assignments'}
+                </h2>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  {pending.length} pending · {completed.length} done
+                </p>
+              </>
+            )}
           </div>
+          <Button size="sm" onClick={() => setAddOpen(true)} className="gap-1.5">
+            <Plus size={14} />
+            Add Assignment
+          </Button>
         </div>
-      )}
-
-      {/* Header */}
-      <div className={cn('px-6 pb-4 border-b border-border', activeCourse ? 'pt-6' : 'pt-4')}>
-        {activeCourse && (
-          <div className="flex items-center justify-between mb-3">
-            <div>
-              <div className="flex items-center gap-2 mb-0.5">
-                <span className="w-3 h-3 rounded-full" style={{ backgroundColor: activeCourse.color }} />
-                <h2 className="font-[Fraunces] text-xl font-semibold">{activeCourse.name}</h2>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                {activeCourse.code} · {pending.length} pending · {completed.length} done
-              </p>
-            </div>
-            <Button size="sm" onClick={() => setAddOpen(true)} className="gap-1.5">
-              <Plus size={14} />
-              Add Assignment
-            </Button>
-          </div>
-        )}
         {/* Filters */}
         <div className="flex items-center gap-2 flex-wrap">
           <div className="flex items-center gap-1 text-xs text-muted-foreground">
