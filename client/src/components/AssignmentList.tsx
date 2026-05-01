@@ -11,13 +11,22 @@ import {
 } from '@/lib/utils';
 import {
   Plus, Trash2, Edit3, ChevronDown, ChevronUp, Filter,
-  SortAsc, CheckCircle2, Circle, AlertCircle
+  SortAsc, CheckCircle2, Circle, AlertCircle, Calendar as CalendarIcon, Clock
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Calendar } from '@/components/ui/calendar';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
+
+const TIME_OPTIONS = Array.from({ length: 48 }, (_, idx) => {
+  const hours = Math.floor(idx / 2);
+  const minutes = idx % 2 === 0 ? '00' : '30';
+  const value = `${String(hours).padStart(2, '0')}:${minutes}`;
+  return { value, label: formatTimeAmPm(value) };
+});
 import type { Assignment, Priority, AssignmentType } from '@/lib/types';
 
 // ── Add/Edit Assignment Dialog ────────────────────────────
@@ -32,14 +41,19 @@ function AssignmentDialog({
   const { state, dispatch } = usePlanner();
   const [title, setTitle] = useState(existing?.title ?? '');
   const [courseId, setCourseId] = useState(existing?.courseId ?? defaultCourseId ?? '');
-  const [semesterId, setSemesterId] = useState(existing?.semesterId ?? defaultSemesterId ?? state.semesters[0]?.id ?? '');
+  const [semesterId, setSemesterId] = useState(
+    existing?.semesterId ?? defaultSemesterId ?? state.activeSemesterId ?? state.semesters[0]?.id ?? ''
+  );
   const [dueDate, setDueDate] = useState(existing?.dueDate ?? getTodayLocalDate());
   const [dueTime, setDueTime] = useState(existing?.dueTime ?? '');
   const [type, setType] = useState<AssignmentType>(existing?.type ?? 'assignment');
   const [priority, setPriority] = useState<Priority>(existing?.priority ?? 'medium');
   const [notes, setNotes] = useState(existing?.notes ?? '');
 
-  const availableCourses = state.courses.filter(c => c.semesterId === semesterId);
+  const selectedSemesterId = semesterId || state.activeSemesterId || state.semesters[0]?.id || '';
+  const availableCourses = selectedSemesterId
+    ? state.courses.filter(c => c.semesterId === selectedSemesterId)
+    : state.courses;
 
   function handleSave() {
     if (!title.trim()) { toast.error('Title is required'); return; }
@@ -99,14 +113,18 @@ function AssignmentDialog({
                   <SelectValue placeholder="Select course" />
                 </SelectTrigger>
                 <SelectContent>
-                  {availableCourses.map(c => (
-                    <SelectItem key={c.id} value={c.id}>
-                      <span className="flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: c.color }} />
-                        {c.name}
-                      </span>
-                    </SelectItem>
-                  ))}
+                  {availableCourses.length > 0 ? (
+                    availableCourses.map(c => (
+                      <SelectItem key={c.id} value={c.id}>
+                        <span className="flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: c.color }} />
+                          {c.name}
+                        </span>
+                      </SelectItem>
+                    ))
+                  ) : (
+                    <SelectItem value="no-courses" disabled>No courses available</SelectItem>
+                  )}
                 </SelectContent>
               </Select>
             </div>
@@ -114,11 +132,46 @@ function AssignmentDialog({
           <div className="grid grid-cols-2 gap-2">
             <div>
               <label className="text-xs font-medium text-muted-foreground mb-1 block">Due Date *</label>
-              <input type="date" value={dueDate} onChange={e => setDueDate(e.target.value)} className="px-3 py-2 rounded-lg text-xs bg-background border border-primary/30 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/60 transition-all" />
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={`w-full justify-between h-9 rounded-md px-3 text-xs text-left ${dueDate ? 'text-foreground' : 'text-muted-foreground'}`}
+                  >
+                    <span>{dueDate || 'Select due date'}</span>
+                    <CalendarIcon className="size-4 opacity-70" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <Calendar
+                    mode="single"
+                    selected={dueDate ? new Date(dueDate) : undefined}
+                    onSelect={date => {
+                      if (date) {
+                        setDueDate(date.toISOString().split('T')[0]);
+                      }
+                    }}
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
             <div>
               <label className="text-xs font-medium text-muted-foreground mb-1 block">Due Time</label>
-              <input type="time" value={dueTime} onChange={e => setDueTime(e.target.value)} className="px-3 py-2 rounded-lg text-xs bg-background border border-primary/30 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/60 transition-all" />
+              <Select value={dueTime} onValueChange={v => setDueTime(v)}>
+                <SelectTrigger className="h-9 text-xs w-32" showIcon={false}>
+                  <div className="flex items-center justify-between gap-2 w-full">
+                    <SelectValue placeholder="--:-- --" />
+                    <Clock className="size-4 opacity-70" />
+                  </div>
+                </SelectTrigger>
+                <SelectContent side="bottom" align="start" avoidCollisions={false} sideOffset={4} className="min-w-[10rem]">
+                  {TIME_OPTIONS.map(option => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-2">
@@ -376,15 +429,16 @@ export default function AssignmentList() {
           ))}
           <div className="ml-auto flex items-center gap-2">
             <SortAsc size={12} className="text-primary" />
-            <select
-              value={sortBy}
-              onChange={e => setSortBy(e.target.value as typeof sortBy)}
-              className="px-2.5 py-1 rounded-lg text-xs font-medium bg-primary/10 text-primary border border-primary/30 hover:border-primary/60 transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50"
-            >
-              <option value="dueDate" className="bg-background text-foreground">Due Date</option>
-              <option value="priority" className="bg-background text-foreground">Priority</option>
-              <option value="course" className="bg-background text-foreground">Course</option>
-            </select>
+            <Select value={sortBy} onValueChange={v => setSortBy(v as typeof sortBy)}>
+              <SelectTrigger className="min-w-[11rem] text-xs font-medium">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="dueDate">Due Date</SelectItem>
+                <SelectItem value="priority">Priority</SelectItem>
+                <SelectItem value="course">Course</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
       </div>
@@ -413,6 +467,19 @@ export default function AssignmentList() {
             </div>
             <div className="space-y-2">
               {upcoming.map(a => <AssignmentCard key={a.id} assignment={a} />)}
+            </div>
+          </section>
+        )}
+
+        {/* Today */}
+        {todayAssignments.length > 0 && (
+          <section>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Today</h3>
+            </div>
+            <div className="space-y-2">
+              {todayAssignments.map(a => <AssignmentCard key={a.id} assignment={a} />)}
             </div>
           </section>
         )}
