@@ -1,5 +1,5 @@
 // ============================================================
-// DESIGN: Soft Academic — Lifestyle habit tracker
+// DESIGN: Anime theme — Lifestyle habit tracker
 // Daily habit check-ins with streak visualization
 // ============================================================
 
@@ -254,55 +254,42 @@ export default function LifestyleView() {
 
   return (
     <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
-      {/* Header with anime hero */}
-      <div
-        className="relative overflow-hidden border-b"
-        style={{
-          backgroundImage: `url('https://d2xsxph8kpxj0f.cloudfront.net/310519663617348932/FbYHn7pJ544MHtifrXSeYe/anime-hero-banner-7jNHkVxJpStwTzBsdsr2z6.webp')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center 60%',
-          minHeight: '100px',
-          borderColor: 'rgba(0, 217, 255, 0.2)',
-          boxShadow: '0 0 20px rgba(0, 217, 255, 0.1)',
-        }}
-      >
-        <div className="absolute inset-0 bg-background/70 backdrop-blur-[1px]" />
-        <div className="relative z-10 px-6 py-5">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="font-[Fraunces] text-2xl font-semibold">Lifestyle</h2>
-              <p className="text-xs text-muted-foreground mt-0.5">{todayDate}</p>
-            </div>
-            <Button size="sm" onClick={() => setAddOpen(true)} className="gap-1.5 shadow-sm">
-              <Plus size={14} />
-              Add Habit
-            </Button>
+      {/* Compact header matching Assignments style */}
+      <div className="px-6 pt-6 pb-4 border-b border-border">
+        <div className="flex items-center justify-between mb-3">
+          <div>
+            <h2 className="font-[Fraunces] text-xl font-semibold">Lifestyle</h2>
+            <p className="text-xs text-muted-foreground mt-0.5">{todayDate}</p>
           </div>
-
-          {/* Today's progress */}
-          {state.habits.length > 0 && (
-            <div className="mt-4 p-3 rounded-xl bg-background/60 border border-border/40">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-medium">Today's Progress</span>
-                <span className="text-xs font-mono text-muted-foreground">{doneToday}/{state.habits.length}</span>
-              </div>
-              <div className="w-full h-2 bg-border rounded-full overflow-hidden">
-                <div
-                  className="h-full rounded-full transition-all duration-500"
-                  style={{
-                    width: `${state.habits.length > 0 ? (doneToday / state.habits.length) * 100 : 0}%`,
-                    backgroundColor: '#7BA68A'
-                  }}
-                />
-              </div>
-              {doneToday === state.habits.length && state.habits.length > 0 && (
-                <p className="text-xs text-green-600 font-medium mt-1.5 text-center">
-                  🎉 All habits done today!
-                </p>
-              )}
-            </div>
-          )}
+          <Button size="sm" onClick={() => setAddOpen(true)} className="gap-1.5">
+            <Plus size={14} />
+            Add Habit
+          </Button>
         </div>
+
+        {/* Today's progress bar */}
+        {state.habits.length > 0 && (
+          <div className="p-3 rounded-lg border border-border/40" style={{ backgroundColor: 'rgba(0, 217, 255, 0.05)' }}>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-medium">Today's Progress</span>
+              <span className="text-xs font-mono text-muted-foreground">{doneToday}/{state.habits.length}</span>
+            </div>
+            <div className="w-full h-1.5 bg-border rounded-full overflow-hidden">
+              <div
+                className="h-full rounded-full transition-all duration-500"
+                style={{
+                  width: `${state.habits.length > 0 ? (doneToday / state.habits.length) * 100 : 0}%`,
+                  backgroundColor: '#00D9FF'
+                }}
+              />
+            </div>
+            {doneToday === state.habits.length && state.habits.length > 0 && (
+              <p className="text-xs text-primary font-medium mt-1.5 text-center">
+                🎉 All habits done today!
+              </p>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Habits grid */}
