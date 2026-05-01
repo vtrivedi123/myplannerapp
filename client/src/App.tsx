@@ -26,16 +26,20 @@ function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
-      <Route path={"/account/signin"} component={SignInPage} />
-      <Route path={"/account/signup"} component={SignUpPage} />
       {isAuthenticated ? (
         <>
           <Route path={"/"} component={Home} />
+          <Route path={"/account/signin"} component={SignInPage} />
+          <Route path={"/account/signup"} component={SignUpPage} />
           <Route path={"/404"} component={NotFound} />
-          <Route component={NotFound} />
+          <Route component={Home} />
         </>
       ) : (
-        <Route component={SignInPage} />
+        <>
+          <Route path={"/account/signup"} component={SignUpPage} />
+          <Route path={"/account/signin"} component={SignInPage} />
+          <Route component={SignInPage} />
+        </>
       )}
     </Switch>
   );

@@ -52,10 +52,10 @@ export const appRouter = router({
         const user = await getUserByOpenId(openId);
         if (!user) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' });
 
-        // Set session cookie
+        // Set session cookie using Set-Cookie header
         const cookieOptions = getSessionCookieOptions(ctx.req);
-        const cookieStr = `${COOKIE_NAME}=${openId}; Path=/; HttpOnly; Secure; SameSite=None`;
-        ctx.res.setHeader('Set-Cookie', cookieStr);
+        const cookieValue = `${COOKIE_NAME}=${openId}; Path=/; HttpOnly; ${cookieOptions.secure ? 'Secure;' : ''} SameSite=None`;
+        ctx.res.setHeader('Set-Cookie', cookieValue);
 
         return { success: true, user };
       }),
@@ -88,10 +88,10 @@ export const appRouter = router({
         // Update last signed in
         await db.update(users).set({ lastSignedIn: new Date() }).where(eq(users.id, user.id));
 
-        // Set session cookie
+        // Set session cookie using Set-Cookie header
         const cookieOptions = getSessionCookieOptions(ctx.req);
-        const cookieStr = `${COOKIE_NAME}=${user.openId}; Path=/; HttpOnly; Secure; SameSite=None`;
-        ctx.res.setHeader('Set-Cookie', cookieStr);
+        const cookieValue = `${COOKIE_NAME}=${user.openId}; Path=/; HttpOnly; ${cookieOptions.secure ? 'Secure;' : ''} SameSite=None`;
+        ctx.res.setHeader('Set-Cookie', cookieValue);
 
         return { success: true, user };
       }),

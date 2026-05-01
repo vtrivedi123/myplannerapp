@@ -22,11 +22,17 @@ export default function SignInPage() {
     }
 
     try {
-      await signInMutation.mutateAsync({ email, password });
-      await refresh();
-      toast.success("Signed in successfully!");
-      window.location.href = "/";
+      const result = await signInMutation.mutateAsync({ email, password });
+      if (result.success) {
+        // Wait a moment for cookie to be set, then refresh auth state
+        setTimeout(async () => {
+          await refresh();
+          toast.success("Signed in successfully!");
+          window.location.href = "/";
+        }, 500);
+      }
     } catch (err: any) {
+      console.error("Sign in error:", err);
       const message = err?.message || "Invalid email or password";
       setError(message);
       toast.error("Sign in failed");
