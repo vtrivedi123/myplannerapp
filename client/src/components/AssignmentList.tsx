@@ -7,7 +7,7 @@ import { useState, useMemo } from 'react';
 import { usePlanner } from '@/contexts/PlannerContext';
 import {
   cn, getCourseColorEntry, getDueBadge, PRIORITY_CONFIG,
-  ASSIGNMENT_TYPE_CONFIG, formatDateShort, formatTimeAmPm, COURSE_COLORS, getTodayLocalDate
+  ASSIGNMENT_TYPE_CONFIG, formatDateInput, formatDateShort, formatTimeAmPm, parseDateInput, COURSE_COLORS, getTodayLocalDate
 } from '@/lib/utils';
 import {
   Plus, Trash2, Edit3, ChevronDown, ChevronUp, Filter,
@@ -145,10 +145,10 @@ function AssignmentDialog({
                 <PopoverContent className="w-auto p-0">
                   <Calendar
                     mode="single"
-                    selected={dueDate ? new Date(dueDate) : undefined}
+                    selected={dueDate ? parseDateInput(dueDate) : undefined}
                     onSelect={date => {
                       if (date) {
-                        setDueDate(date.toISOString().split('T')[0]);
+                        setDueDate(formatDateInput(date));
                       }
                     }}
                   />
