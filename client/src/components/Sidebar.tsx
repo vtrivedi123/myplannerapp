@@ -4,10 +4,11 @@
 
 import { useState } from 'react';
 import { usePlanner } from '@/contexts/PlannerContext';
+import { useAuth } from '@/_core/hooks/useAuth';
 import { cn, getCourseColorEntry, SEMESTER_COLORS } from '@/lib/utils';
 import {
   ChevronDown, ChevronRight, Plus, Folder, BookOpen,
-  Calendar, Heart, GraduationCap, Trash2, Edit3, Check, X
+  Calendar, Heart, GraduationCap, Trash2, Edit3, Check, X, LogOut
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -398,13 +399,27 @@ export default function Sidebar() {
       </div>
 
       {/* Footer */}
-      <div className="px-4 py-3 border-t border-border">
-        <p className="text-[10px] text-muted-foreground text-center">
-          {state.assignments.filter(a => a.completed).length} assignments completed
-        </p>
-      </div>
+      <UserFooter />
 
       <SemesterDialog open={addSemesterOpen} onClose={() => setAddSemesterOpen(false)} />
     </aside>
+  );
+}
+
+function UserFooter() {
+  const { user, logout } = useAuth();
+
+  return (
+    <div className="px-3 py-3 border-t border-border bg-sidebar">
+      <div className="flex items-center gap-3">
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-medium truncate">{user?.name ?? 'User'}</p>
+          <p className="text-xs text-muted-foreground truncate">{user?.email ?? 'Not signed in'}</p>
+        </div>
+        <Button variant="outline" size="sm" onClick={logout}>
+          Sign out
+        </Button>
+      </div>
+    </div>
   );
 }
