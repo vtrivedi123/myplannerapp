@@ -7,8 +7,9 @@
   "main": "electron/main.cjs",
   "license": "MIT",
   "scripts": {
-    "dev": "NODE_ENV=development tsx watch server/_core/index.ts",
+    "dev": "cross-env NODE_ENV=development tsx watch server/_core/index.ts",
     "build": "vite build && esbuild server/_core/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
+    "vercel-build": "pnpm build",
     "start": "NODE_ENV=production node dist/index.js",
     "check": "tsc --noEmit",
     "format": "prettier --write .",
@@ -98,6 +99,7 @@
     "add": "^2.0.6",
     "autoprefixer": "^10.4.20",
     "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
     "drizzle-kit": "^0.31.4",
     "electron": "^41.4.0",
     "electron-builder": "^26.8.1",
