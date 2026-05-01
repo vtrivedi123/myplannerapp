@@ -5,14 +5,17 @@
 import { useState } from 'react';
 import { usePlanner } from '@/contexts/PlannerContext';
 import { useAuth } from '@/_core/hooks/useAuth';
-import { cn, getCourseColorEntry, SEMESTER_COLORS } from '@/lib/utils';
+import { cn, getCourseColorEntry, SEMESTER_COLORS, formatDateInput, parseDateInput } from '@/lib/utils';
 import {
   ChevronDown, ChevronRight, Plus, Folder, BookOpen,
-  Calendar, Heart, GraduationCap, Trash2, Edit3, Check, X, LogOut
+  Calendar, Heart, GraduationCap, Trash2, Edit3, Check, X, LogOut,
+  Calendar as CalendarIcon
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Calendar as CalendarPicker } from '@/components/ui/calendar';
 import { toast } from 'sonner';
 import type { Semester, Course } from '@/lib/types';
 import { COURSE_COLORS } from '@/lib/utils';
@@ -53,11 +56,45 @@ function SemesterDialog({
           <div className="grid grid-cols-2 gap-2">
             <div>
               <label className="text-xs font-medium text-muted-foreground mb-1 block">Start Date</label>
-              <Input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} />
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={`w-full justify-between h-9 rounded-md px-3 text-xs text-left ${startDate ? 'text-foreground' : 'text-muted-foreground'}`}
+                  >
+                    <span>{startDate || 'Select date'}</span>
+                    <CalendarIcon className="size-4 opacity-70" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <CalendarPicker
+                    mode="single"
+                    selected={startDate ? parseDateInput(startDate) : undefined}
+                    onSelect={date => { if (date) setStartDate(formatDateInput(date)); }}
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
             <div>
               <label className="text-xs font-medium text-muted-foreground mb-1 block">End Date</label>
-              <Input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} />
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={`w-full justify-between h-9 rounded-md px-3 text-xs text-left ${endDate ? 'text-foreground' : 'text-muted-foreground'}`}
+                  >
+                    <span>{endDate || 'Select date'}</span>
+                    <CalendarIcon className="size-4 opacity-70" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <CalendarPicker
+                    mode="single"
+                    selected={endDate ? parseDateInput(endDate) : undefined}
+                    onSelect={date => { if (date) setEndDate(formatDateInput(date)); }}
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
           </div>
           <div>
@@ -174,6 +211,7 @@ function SemesterFolder({ semester }: { semester: Semester }) {
   const [hovering, setHovering] = useState(false);
   const courses = state.courses.filter(c => c.semesterId === semester.id);
   const isActive = state.activeSemesterId === semester.id;
+
   function handleSelect() {
     dispatch({ type: 'SET_ACTIVE_SEMESTER', payload: semester.id });
     dispatch({ type: 'SET_ACTIVE_COURSE', payload: null });
