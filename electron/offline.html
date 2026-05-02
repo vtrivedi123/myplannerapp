@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>College Planner</title>
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #020617;
+        color: #e2e8f0;
+        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+      .card {
+        max-width: 520px;
+        width: 100%;
+        padding: 36px;
+        border-radius: 28px;
+        background: rgba(15, 23, 42, 0.92);
+        box-shadow: 0 28px 80px rgba(0, 0, 0, 0.35);
+        border: 1px solid rgba(148, 163, 184, 0.14);
+      }
+      .title {
+        font-size: clamp(1.8rem, 4vw, 2.6rem);
+        margin: 0 0 12px;
+        line-height: 1.05;
+      }
+      .description {
+        margin: 0 0 24px;
+        color: #94a3b8;
+        line-height: 1.8;
+      }
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.95rem 1.6rem;
+        border-radius: 999px;
+        border: none;
+        background: #0ea5e9;
+        color: white;
+        font-weight: 600;
+        font-size: 0.95rem;
+        cursor: pointer;
+      }
+      .hint {
+        margin-top: 18px;
+        color: #64748b;
+        font-size: 0.96rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1 class="title">Planner Login</h1>
+      <p class="description">
+        The app is running, but the local backend server is unavailable.
+        Start the server and the app will automatically switch to the login screen.
+      </p>
+      <div style="display:grid; gap:1rem;">
+        <div style="display:grid; gap:0.5rem;">
+          <label style="font-size:0.9rem; color:#94a3b8;">Email</label>
+          <input style="width:100%; padding:0.9rem 1rem; border-radius:0.9rem; border:1px solid rgba(148,163,184,0.18); background:rgba(15,23,42,0.8); color:#e2e8f0;" value="you@example.com" disabled />
+        </div>
+        <div style="display:grid; gap:0.5rem;">
+          <label style="font-size:0.9rem; color:#94a3b8;">Password</label>
+          <input type="password" style="width:100%; padding:0.9rem 1rem; border-radius:0.9rem; border:1px solid rgba(148,163,184,0.18); background:rgba(15,23,42,0.8); color:#e2e8f0;" value="password" disabled />
+        </div>
+        <div id="status" style="padding:1rem 1rem; border-radius:0.9rem; background:rgba(59,130,246,0.12); color:#60a5fa;">
+          Waiting for backend server...
+        </div>
+      </div>
+      <button class="button" onclick="location.reload()">Retry</button>
+      <p class="hint">
+        The app will automatically switch to the real login page once the local server responds.
+      </p>
+      <script>
+        const statusEl = document.getElementById('status')
+        async function checkServer() {
+          try {
+            const res = await fetch('http://localhost:4000', { method: 'HEAD' })
+            if (res.ok) {
+              statusEl.textContent = 'Backend available — reloading now...'
+              location.reload()
+              return
+            }
+          } catch (err) {
+            statusEl.textContent = 'Backend unreachable — retrying in 3 seconds.'
+          }
+          setTimeout(checkServer, 3000)
+        }
+        checkServer()
+      </script>
+    </div>
+  </body>
+</html>

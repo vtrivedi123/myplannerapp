@@ -2,9 +2,23 @@ const { app, BrowserWindow } = require('electron')
 const { spawn } = require('child_process')
 const path = require('path')
 const fs = require('fs')
+const { pathToFileURL } = require('url')
 
 let serverProcess
 let mainWindow
+
+const gotTheLock = app.requestSingleInstanceLock()
+if (!gotTheLock) {
+  app.quit()
+  return
+}
+
+app.on('second-instance', () => {
+  if (mainWindow) {
+    if (mainWindow.isMinimized()) mainWindow.restore()
+    mainWindow.focus()
+  }
+})
 
 // Find the .env file — works both in dev and packaged exe
 function getEnvPath() {
@@ -36,6 +50,10 @@ function loadEnv() {
   return env
 }
 
+function getOfflinePath() {
+  return path.join(__dirname, 'offline.html')
+}
+
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1280,
@@ -47,7 +65,11 @@ function createWindow() {
     }
   })
 
-  mainWindow.loadURL('http://localhost:4000')
+  const offlinePath = getOfflinePath()
+  if (!fs.existsSync(offlinePath)) {
+    console.error('Offline page not found:', offlinePath)
+  }
+  mainWindow.loadURL(pathToFileURL(offlinePath).href)
 
   // Uncomment the line below to open DevTools for debugging:
   // mainWindow.webContents.openDevTools()
@@ -97,14 +119,23 @@ function waitForServer(url, retries = 30, delay = 500) {
 }
 
 app.whenReady().then(async () => {
+  createWindow()
   startServer()
 
   try {
     await waitForServer('http://localhost:4000')
-    createWindow()
+    if (mainWindow) {
+      mainWindow.loadURL('http://localhost:4000')
+    }
   } catch (err) {
     console.error('Could not connect to server:', err)
-    app.quit()
+    // Keep the app open so the launcher is available even when the backend is down.
+  }
+})
+
+app.on('activate', () => {
+  if (BrowserWindow.getAllWindows().length === 0) {
+    createWindow()
   }
 })
 
