@@ -3,100 +3,354 @@
   <head>
     <meta charset="UTF-8" />
     <title>College Planner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700&display=swap"
+      rel="stylesheet"
+    />
     <style>
+      /* ── Design tokens (mirrors Tailwind CSS vars used in the React app) ── */
       :root {
         color-scheme: dark;
+        --background:        #0c1220;
+        --card:              rgba(15, 23, 42, 0.50);
+        --foreground:        #e2e8f0;
+        --muted-foreground:  #94a3b8;
+        --border:            rgba(148, 163, 184, 0.20);
+        --primary:           #38bdf8;          /* sky-400 */
+        --primary-80:        rgba(56, 189, 248, 0.80);
+        --primary-60:        rgba(56, 189, 248, 0.60);
+        --primary-30:        rgba(56, 189, 248, 0.30);
+        --primary-20:        rgba(56, 189, 248, 0.20);
+        --primary-10:        rgba(56, 189, 248, 0.10);
+        --primary-5:         rgba(56, 189, 248, 0.05);
+        --primary-fg:        #0f172a;
+        --red:               #f87171;
+        --red-30:            rgba(248, 113, 113, 0.30);
+        --red-10:            rgba(248, 113, 113, 0.10);
+        --blue-info:         #60a5fa;
+        --blue-info-10:      rgba(59, 130, 246, 0.12);
       }
+
+      *, *::before, *::after { box-sizing: border-box; }
+
       body {
         margin: 0;
         min-height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #020617;
-        color: #e2e8f0;
-        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        /* matches: bg-gradient-to-br from-background via-background to-primary/5 */
+        background: linear-gradient(135deg, var(--background) 0%, var(--background) 60%, #0d1a2a 100%);
+        color: var(--foreground);
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: 0.9375rem;
+        padding: 1rem;
       }
-      .card {
-        max-width: 520px;
-        width: 100%;
-        padding: 36px;
-        border-radius: 28px;
-        background: rgba(15, 23, 42, 0.92);
-        box-shadow: 0 28px 80px rgba(0, 0, 0, 0.35);
-        border: 1px solid rgba(148, 163, 184, 0.14);
-      }
-      .title {
-        font-size: clamp(1.8rem, 4vw, 2.6rem);
-        margin: 0 0 12px;
-        line-height: 1.05;
-      }
-      .description {
-        margin: 0 0 24px;
-        color: #94a3b8;
-        line-height: 1.8;
-      }
-      .button {
+
+      /* ── Page wrapper ── */
+      .page { width: 100%; max-width: 28rem; }
+
+      /* ── Header ── */
+      .header { text-align: center; margin-bottom: 2rem; }
+
+      .logo {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        padding: 0.95rem 1.6rem;
-        border-radius: 999px;
-        border: none;
-        background: #0ea5e9;
-        color: white;
-        font-weight: 600;
-        font-size: 0.95rem;
-        cursor: pointer;
+        width: 3rem;
+        height: 3rem;
+        border-radius: 0.5rem;                 /* rounded-lg */
+        background: var(--primary-10);
+        border: 1px solid var(--primary-30);
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
       }
-      .hint {
-        margin-top: 18px;
-        color: #64748b;
-        font-size: 0.96rem;
+
+      h1 {
+        font-family: "Fraunces", serif;
+        font-size: 1.875rem;                   /* text-3xl */
+        font-weight: 700;
+        line-height: 1.1;
+        margin: 0 0 0.5rem;
+        color: var(--foreground);
+      }
+
+      .subtitle {
+        font-size: 0.875rem;
+        color: var(--muted-foreground);
+        margin: 0;
+      }
+
+      /* ── Card ── */
+      .card {
+        border-radius: 0.75rem;                /* rounded-xl */
+        border: 1px solid var(--primary-20);
+        background: var(--card);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        padding: 1.5rem;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.40);
+        display: grid;
+        gap: 1.25rem;                          /* space-y-5 */
+      }
+
+      /* ── Fields ── */
+      .field { display: grid; gap: 0.5rem; }
+
+      .label {
+        display: block;
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: var(--muted-foreground);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .input,
+      .input-password {
+        width: 100%;
+        padding: 0.625rem 1rem;                /* py-2.5 px-4 */
+        border-radius: 0.5rem;                 /* rounded-lg */
+        border: 1px solid var(--primary-30);
+        background: var(--background);
+        color: var(--foreground);
+        font-size: 0.9375rem;
+        outline: none;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      }
+      .input::placeholder,
+      .input-password::placeholder { color: var(--muted-foreground); }
+      .input:focus,
+      .input-password:focus {
+        border-color: var(--primary-60);
+        box-shadow: 0 0 0 2px var(--primary-20);  /* ring-2 ring-primary/50 */
+      }
+
+      /* ── Password wrapper ── */
+      .password-wrapper { position: relative; }
+      .input-password { padding-right: 2.75rem; }
+      .eye-btn {
+        position: absolute;
+        right: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--muted-foreground);
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        line-height: 1;
+        font-size: 1rem;
+        transition: color 0.15s;
+      }
+      .eye-btn:hover { color: var(--foreground); }
+
+      /* ── Status / error boxes ── */
+      .alert {
+        border-radius: 0.5rem;
+        border: 1px solid var(--red-30);
+        background: var(--red-10);
+        color: var(--red);
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
+      }
+
+      .status-box {
+        border-radius: 0.5rem;
+        border: 1px solid rgba(59, 130, 246, 0.25);
+        background: var(--blue-info-10);
+        color: var(--blue-info);
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
+      }
+
+      /* ── Button ── */
+      .button {
+        width: 100%;
+        padding: 0.625rem 1rem;                /* py-2.5 */
+        border-radius: 0.5rem;                 /* rounded-lg */
+        border: none;
+        /* matches: bg-gradient-to-r from-primary to-primary/80 */
+        background: linear-gradient(90deg, var(--primary) 0%, var(--primary-80) 100%);
+        color: var(--primary-fg);
+        font-weight: 500;
+        font-size: 0.875rem;
+        cursor: pointer;
+        transition: box-shadow 0.2s ease, transform 0.15s ease, opacity 0.15s;
+      }
+      .button:hover {
+        box-shadow: 0 8px 24px var(--primary-30);  /* hover:shadow-lg hover:shadow-primary/20 */
+        transform: translateY(-1px);
+      }
+      .button:disabled { opacity: 0.50; cursor: not-allowed; }
+
+      /* ── Divider ── */
+      .divider {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .divider::before {
+        content: "";
+        position: absolute;
+        left: 0; right: 0;
+        height: 1px;
+        background: var(--border);
+      }
+      .divider span {
+        position: relative;
+        padding: 0 0.5rem;
+        background: transparent;               /* keeps card bg showing through */
+        font-size: 0.75rem;
+        color: var(--muted-foreground);
+        /* Since card uses backdrop-filter, we fake the bg */
+        background: #111e33;
+      }
+
+      /* ── Link row ── */
+      .link-row {
+        text-align: center;
+        font-size: 0.875rem;
+        color: var(--muted-foreground);
+      }
+      .link-row a {
+        font-weight: 500;
+        color: var(--primary);
+        text-decoration: none;
+        transition: color 0.15s;
+      }
+      .link-row a:hover { color: var(--primary-80); }
+
+      /* ── Footer ── */
+      .footer {
+        text-align: center;
+        font-size: 0.75rem;
+        color: var(--muted-foreground);
+        margin-top: 1.5rem;
       }
     </style>
   </head>
   <body>
-    <div class="card">
-      <h1 class="title">Planner Login</h1>
-      <p class="description">
-        The app is running, but the local backend server is unavailable.
-        Start the server and the app will automatically switch to the login screen.
-      </p>
-      <div style="display:grid; gap:1rem;">
-        <div style="display:grid; gap:0.5rem;">
-          <label style="font-size:0.9rem; color:#94a3b8;">Email</label>
-          <input style="width:100%; padding:0.9rem 1rem; border-radius:0.9rem; border:1px solid rgba(148,163,184,0.18); background:rgba(15,23,42,0.8); color:#e2e8f0;" value="you@example.com" disabled />
-        </div>
-        <div style="display:grid; gap:0.5rem;">
-          <label style="font-size:0.9rem; color:#94a3b8;">Password</label>
-          <input type="password" style="width:100%; padding:0.9rem 1rem; border-radius:0.9rem; border:1px solid rgba(148,163,184,0.18); background:rgba(15,23,42,0.8); color:#e2e8f0;" value="password" disabled />
-        </div>
-        <div id="status" style="padding:1rem 1rem; border-radius:0.9rem; background:rgba(59,130,246,0.12); color:#60a5fa;">
-          Waiting for backend server...
-        </div>
+    <div class="page">
+      <!-- Header -->
+      <div class="header">
+        <div class="logo">📚</div>
+        <h1>Planner</h1>
+        <p class="subtitle">Sign in to your college planner</p>
       </div>
-      <button class="button" onclick="location.reload()">Retry</button>
-      <p class="hint">
-        The app will automatically switch to the real login page once the local server responds.
-      </p>
-      <script>
-        const statusEl = document.getElementById('status')
-        async function checkServer() {
-          try {
-            const res = await fetch('http://localhost:4000', { method: 'HEAD' })
-            if (res.ok) {
-              statusEl.textContent = 'Backend available — reloading now...'
-              location.reload()
-              return
-            }
-          } catch (err) {
-            statusEl.textContent = 'Backend unreachable — retrying in 3 seconds.'
-          }
-          setTimeout(checkServer, 3000)
-        }
-        checkServer()
-      </script>
+
+      <!-- Card -->
+      <div class="card">
+        <!-- Email -->
+        <div class="field">
+          <label class="label">Email Address</label>
+          <input
+            class="input"
+            type="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+          />
+        </div>
+
+        <!-- Password -->
+        <div class="field">
+          <label class="label">Password</label>
+          <div class="password-wrapper">
+            <input
+              id="passwordInput"
+              class="input-password"
+              type="password"
+              placeholder="Enter your password"
+              autocomplete="current-password"
+            />
+            <button
+              type="button"
+              class="eye-btn"
+              id="eyeBtn"
+              onclick="togglePassword()"
+              aria-label="Toggle password visibility"
+            >👁</button>
+          </div>
+        </div>
+
+        <!-- Status message -->
+        <div id="statusBox" class="status-box">Waiting for backend server…</div>
+
+        <!-- Reload button -->
+        <button class="button" onclick="location.reload()">Reload</button>
+
+        <!-- Divider -->
+        <div class="divider"><span>New to Planner?</span></div>
+
+        <!-- Sign-up link -->
+        <p class="link-row">
+          Don't have an account?
+          <a href="#" onclick="event.preventDefault()">Create one</a>
+        </p>
+      </div>
+
+      <p class="footer">Your data is encrypted and secure</p>
     </div>
+
+    <script>
+      /* ── password toggle ── */
+      function togglePassword() {
+        const inp = document.getElementById('passwordInput')
+        const btn = document.getElementById('eyeBtn')
+        if (inp.type === 'password') {
+          inp.type = 'text'
+          btn.textContent = '🙈'
+        } else {
+          inp.type = 'password'
+          btn.textContent = '👁'
+        }
+      }
+
+      /* ── backend polling ── */
+      const statusBox = document.getElementById('statusBox')
+
+      let countdownSecs = 3
+      let tickInterval
+      let retryTimeout
+
+      function startCountdown() {
+        countdownSecs = 3
+        clearInterval(tickInterval)
+        clearTimeout(retryTimeout)
+
+        statusBox.textContent = `Backend unreachable — retrying in ${countdownSecs}s…`
+
+        tickInterval = setInterval(() => {
+          countdownSecs -= 1
+          if (countdownSecs > 0) {
+            statusBox.textContent = `Backend unreachable — retrying in ${countdownSecs}s…`
+          }
+        }, 1000)
+      }
+
+      async function checkServer() {
+        try {
+          const res = await fetch(`http://localhost:4000/?_=${Date.now()}`, {
+            method: 'GET',
+            cache: 'no-store',
+          })
+          if (res.ok) {
+            clearInterval(tickInterval)
+            clearTimeout(retryTimeout)
+            statusBox.textContent = 'Backend available — opening login screen…'
+            window.location.href = 'http://localhost:4000'
+            return
+          }
+        } catch {
+          startCountdown()
+        }
+        retryTimeout = setTimeout(checkServer, 3000)
+      }
+
+      checkServer()
+    </script>
   </body>
 </html>
