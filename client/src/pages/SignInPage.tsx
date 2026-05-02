@@ -40,7 +40,7 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-primary/5 p-4">
+    <div className="min-h-screen flex items-center justify-center p-4" style={{ background: 'linear-gradient(135deg, var(--background) 0%, var(--background) 60%, #0d1e38 100%)' }}>
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
@@ -115,7 +115,7 @@ export default function SignInPage() {
             {signInMutation.isPending ? "Signing in..." : "Sign In"}
           </button>
 
-          {/* Divider */}
+          {/* Divider
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-border/40"></div>
@@ -125,7 +125,7 @@ export default function SignInPage() {
                 New to Planner?
               </span>
             </div>
-          </div>
+          </div> */}
 
           {/* Sign Up Link */}
           <p className="text-center text-sm text-muted-foreground">
