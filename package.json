@@ -1,7 +1,7 @@
 {
-  "name": "college-planner",
+  "name": "planner",
   "version": "1.0.0",
-  "description": "College Planner App",
+  "description": "Planner App",
   "author": "Vishal",
   "type": "module",
   "main": "electron/main.cjs",
