@@ -1,7 +1,7 @@
 {
-  "name": "planner",
+  "name": "college-planner",
   "version": "1.0.0",
-  "description": "Planner App",
+  "description": "College Planner App",
   "author": "Vishal",
   "type": "module",
   "main": "electron/main.cjs",
@@ -117,8 +117,8 @@
     "wait-on": "^9.0.5"
   },
   "build": {
-    "appId": "com.planner",
-    "productName": "Planner",
+    "appId": "com.college-planner",
+    "productName": "College Planner",
     "win": {
       "target": "nsis",
       "icon": "assets/icon.ico"
