@@ -117,8 +117,8 @@
     "wait-on": "^9.0.5"
   },
   "build": {
-    "appId": "com.college-planner",
-    "productName": "College Planner",
+    "appId": "com.planner",
+    "productName": "Planner",
     "win": {
       "target": "nsis",
       "icon": "assets/icon.ico"
@@ -126,7 +126,6 @@
     "files": [
       "electron/**",
       "dist/**",
-      "node_modules/**",
       "assets/**",
       ".env"
     ],
