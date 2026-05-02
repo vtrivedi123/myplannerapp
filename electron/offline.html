@@ -6,31 +6,34 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
     <style>
       /* ── Design tokens (mirrors Tailwind CSS vars used in the React app) ── */
       :root {
         color-scheme: dark;
-        --background:        #0c1220;
-        --card:              rgba(15, 23, 42, 0.50);
-        --foreground:        #e2e8f0;
-        --muted-foreground:  #94a3b8;
-        --border:            rgba(148, 163, 184, 0.20);
-        --primary:           #38bdf8;          /* sky-400 */
-        --primary-80:        rgba(56, 189, 248, 0.80);
-        --primary-60:        rgba(56, 189, 248, 0.60);
-        --primary-30:        rgba(56, 189, 248, 0.30);
-        --primary-20:        rgba(56, 189, 248, 0.20);
-        --primary-10:        rgba(56, 189, 248, 0.10);
-        --primary-5:         rgba(56, 189, 248, 0.05);
-        --primary-fg:        #0f172a;
-        --red:               #f87171;
-        --red-30:            rgba(248, 113, 113, 0.30);
-        --red-10:            rgba(248, 113, 113, 0.10);
-        --blue-info:         #60a5fa;
-        --blue-info-10:      rgba(59, 130, 246, 0.12);
+        /* ── Anime Dark Blue / Neon Cyan — mirrors globals.css :root ── */
+        --background:        #0A1428;
+        --card:              #121f39;
+        --foreground:        #E0E7FF;
+        --muted-foreground:  #9CA3AF;
+        --border:            #2a3a5a;
+        --primary:           #00D9FF;
+        --primary-fg:        #0A1428;
+        --primary-80:        rgba(0, 217, 255, 0.80);
+        --primary-60:        rgba(0, 217, 255, 0.60);
+        --primary-30:        rgba(0, 217, 255, 0.30);
+        --primary-20:        rgba(0, 217, 255, 0.20);
+        --primary-10:        rgba(0, 217, 255, 0.10);
+        --primary-5:         rgba(0, 217, 255, 0.05);
+        --red:               #FF1744;
+        --red-30:            rgba(255, 23, 68, 0.30);
+        --red-10:            rgba(255, 23, 68, 0.10);
+        --blue-info:         #00D9FF;
+        --blue-info-10:      rgba(0, 217, 255, 0.12);
+        /* blended card surface for divider label: lerp(#0A1428, #1a2a4a, 0.5) */
+        --card-surface:      #12203a;
       }
 
       *, *::before, *::after { box-sizing: border-box; }
@@ -42,10 +45,10 @@
         align-items: center;
         justify-content: center;
         /* matches: bg-gradient-to-br from-background via-background to-primary/5 */
-        background: linear-gradient(135deg, var(--background) 0%, var(--background) 60%, #0d1a2a 100%);
+        background: linear-gradient(135deg, var(--background) 0%, var(--background) 60%, #0d1e38 100%);
         color: var(--foreground);
-        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        font-size: 0.9375rem;
+        font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
+        font-size: 1rem;
         padding: 1rem;
       }
 
@@ -61,7 +64,7 @@
         justify-content: center;
         width: 3rem;
         height: 3rem;
-        border-radius: 0.5rem;                 /* rounded-lg */
+        border-radius: 0.5rem;
         background: var(--primary-10);
         border: 1px solid var(--primary-30);
         margin-bottom: 1rem;
@@ -70,7 +73,7 @@
 
       h1 {
         font-family: "Fraunces", serif;
-        font-size: 1.875rem;                   /* text-3xl */
+        font-size: 1.875rem;
         font-weight: 700;
         line-height: 1.1;
         margin: 0 0 0.5rem;
@@ -85,15 +88,13 @@
 
       /* ── Card ── */
       .card {
-        border-radius: 0.75rem;                /* rounded-xl */
-        border: 1px solid var(--primary-20);
+        border-radius: 0.75rem;
+        border: 1px solid rgba(0, 217, 255, 0.20);
         background: var(--card);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
         padding: 1.5rem;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.40);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0);
         display: grid;
-        gap: 1.25rem;                          /* space-y-5 */
+        gap: 1.25rem;
       }
 
       /* ── Fields ── */
@@ -104,19 +105,18 @@
         font-size: 0.75rem;
         font-weight: 500;
         color: var(--muted-foreground);
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
+        /* matches React: no uppercase, no letter-spacing */
       }
 
       .input,
       .input-password {
         width: 100%;
-        padding: 0.625rem 1rem;                /* py-2.5 px-4 */
-        border-radius: 0.5rem;                 /* rounded-lg */
+        padding: 0.625rem 1rem;
+        border-radius: 0.5rem;
         border: 1px solid var(--primary-30);
         background: var(--background);
         color: var(--foreground);
-        font-size: 0.9375rem;
+        font-size: 1rem;
         outline: none;
         transition: border-color 0.15s ease, box-shadow 0.15s ease;
       }
@@ -125,7 +125,7 @@
       .input:focus,
       .input-password:focus {
         border-color: var(--primary-60);
-        box-shadow: 0 0 0 2px var(--primary-20);  /* ring-2 ring-primary/50 */
+        box-shadow: 0 0 15px var(--primary-30), inset 0 0 10px var(--primary-5);
       }
 
       /* ── Password wrapper ── */
@@ -145,7 +145,10 @@
         font-size: 1rem;
         transition: color 0.15s;
       }
-      .eye-btn:hover { color: var(--foreground); }
+      .eye-btn:hover {
+        color: var(--foreground);
+        transform: translateY(-50%); /* stay centred — no lift */
+      }
 
       /* ── Status / error boxes ── */
       .alert {
@@ -169,10 +172,9 @@
       /* ── Button ── */
       .button {
         width: 100%;
-        padding: 0.625rem 1rem;                /* py-2.5 */
-        border-radius: 0.5rem;                 /* rounded-lg */
+        padding: 0.625rem 1rem;
+        border-radius: 0.5rem;
         border: none;
-        /* matches: bg-gradient-to-r from-primary to-primary/80 */
         background: linear-gradient(90deg, var(--primary) 0%, var(--primary-80) 100%);
         color: var(--primary-fg);
         font-weight: 500;
@@ -181,7 +183,7 @@
         transition: box-shadow 0.2s ease, transform 0.15s ease, opacity 0.15s;
       }
       .button:hover {
-        box-shadow: 0 8px 24px var(--primary-30);  /* hover:shadow-lg hover:shadow-primary/20 */
+        box-shadow: 0 8px 24px var(--primary-30);
         transform: translateY(-1px);
       }
       .button:disabled { opacity: 0.50; cursor: not-allowed; }
@@ -203,11 +205,10 @@
       .divider span {
         position: relative;
         padding: 0 0.5rem;
-        background: transparent;               /* keeps card bg showing through */
+        /* use the computed card surface colour instead of an arbitrary hex */
+        background: var(--card-surface);
         font-size: 0.75rem;
         color: var(--muted-foreground);
-        /* Since card uses backdrop-filter, we fake the bg */
-        background: #111e33;
       }
 
       /* ── Link row ── */
@@ -215,6 +216,7 @@
         text-align: center;
         font-size: 0.875rem;
         color: var(--muted-foreground);
+        margin-block: 0.25rem;
       }
       .link-row a {
         font-weight: 500;
@@ -272,24 +274,34 @@
               id="eyeBtn"
               onclick="togglePassword()"
               aria-label="Toggle password visibility"
-            >👁</button>
+            >
+              <!-- Eye icon (visible by default) -->
+              <svg id="iconEye" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              <!-- EyeOff icon (hidden by default) -->
+              <svg id="iconEyeOff" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+                <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/>
+                <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/>
+                <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/>
+                <line x1="2" x2="22" y1="2" y2="22"/>
+              </svg>
+            </button>
           </div>
         </div>
 
         <!-- Fake Sign In button -->
         <button class="button">Sign In</button>
 
-        <!-- Status message -->
-        <div id="statusBox" class="status-box">Waiting for server…</div>
-
-        <!-- Divider -->
-        <div class="divider"><span>New to Planner?</span></div>
-
-        <!-- Sign-up link -->
+        <!-- Sign-up link — now directly below the button, matching the React layout -->
         <p class="link-row">
           Don't have an account?
           <a href="#" onclick="event.preventDefault()">Create one</a>
         </p>
+
+        <!-- Status message -->
+        <div id="statusBox" class="status-box">Waiting for server…</div>
       </div>
 
       <p class="footer">Your data is encrypted and secure</p>
@@ -299,13 +311,16 @@
       /* ── password toggle ── */
       function togglePassword() {
         const inp = document.getElementById('passwordInput')
-        const btn = document.getElementById('eyeBtn')
+        const iconEye    = document.getElementById('iconEye')
+        const iconEyeOff = document.getElementById('iconEyeOff')
         if (inp.type === 'password') {
           inp.type = 'text'
-          btn.textContent = '🙈'
+          iconEye.style.display    = 'none'
+          iconEyeOff.style.display = 'block'
         } else {
           inp.type = 'password'
-          btn.textContent = '👁'
+          iconEye.style.display    = 'block'
+          iconEyeOff.style.display = 'none'
         }
       }
 
