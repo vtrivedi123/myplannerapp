@@ -276,11 +276,11 @@
           </div>
         </div>
 
-        <!-- Status message -->
-        <div id="statusBox" class="status-box">Waiting for backend server…</div>
+        <!-- Fake Sign In button -->
+        <button class="button">Sign In</button>
 
-        <!-- Reload button -->
-        <button class="button" onclick="location.reload()">Reload</button>
+        <!-- Status message -->
+        <div id="statusBox" class="status-box">Waiting for server…</div>
 
         <!-- Divider -->
         <div class="divider"><span>New to Planner?</span></div>
@@ -321,12 +321,15 @@
         clearInterval(tickInterval)
         clearTimeout(retryTimeout)
 
-        statusBox.textContent = `Backend unreachable — retrying in ${countdownSecs}s…`
+        statusBox.textContent = `Server unavailable — retrying in ${countdownSecs}s…`
 
         tickInterval = setInterval(() => {
           countdownSecs -= 1
           if (countdownSecs > 0) {
-            statusBox.textContent = `Backend unreachable — retrying in ${countdownSecs}s…`
+            statusBox.textContent = `Server unavailable — retrying in ${countdownSecs}s…`
+          } else {
+            statusBox.textContent = 'Waiting for server…'
+            clearInterval(tickInterval)
           }
         }, 1000)
       }
@@ -340,7 +343,7 @@
           if (res.ok) {
             clearInterval(tickInterval)
             clearTimeout(retryTimeout)
-            statusBox.textContent = 'Backend available — opening login screen…'
+            statusBox.textContent = 'Server found — opening login screen…'
             window.location.href = 'http://localhost:4000'
             return
           }
