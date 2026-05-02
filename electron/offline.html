@@ -343,7 +343,7 @@
           if (res.ok) {
             clearInterval(tickInterval)
             clearTimeout(retryTimeout)
-            statusBox.textContent = 'Server found — opening login screen…'
+            statusBox.textContent = 'Server found — redirecting…'
             window.location.href = 'http://localhost:4000'
             return
           }
