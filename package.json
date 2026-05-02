@@ -126,6 +126,7 @@
     "files": [
       "electron/**",
       "dist/**",
+      "node_modules/**",
       "assets/**",
       ".env"
     ],
